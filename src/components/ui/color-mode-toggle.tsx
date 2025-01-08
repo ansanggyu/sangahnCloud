@@ -1,15 +1,18 @@
-import { IconButton } from "@chakra-ui/react"
-import { useTheme } from "next-themes"
-import { LuMoon, LuSun } from "react-icons/lu"
+import { Button } from "@chakra-ui/react";
+import { useTheme } from "next-themes";
 
-export function ColorModeToggle() {
-    const { theme, setTheme } = useTheme()
-    const toggleColorMode = () => {
-        setTheme(theme === "light" ? "dark" : "light")
-    }
+function ColorModeToggle() {
+    const { theme, setTheme } = useTheme();
+
+    const toggleTheme = () => {
+        setTheme(theme === "dark" ? "light" : "dark");
+    };
+
     return (
-        <IconButton aria-label="toggle color mode" onClick={toggleColorMode}>
-            {theme === "light" ? <LuMoon /> : <LuSun />}
-        </IconButton>
-    )
+        <Button onClick={toggleTheme} colorScheme="blue">
+            {theme === "dark" ? "라이트 모드" : "다크 모드"}
+        </Button>
+    );
 }
+
+export default ColorModeToggle;
