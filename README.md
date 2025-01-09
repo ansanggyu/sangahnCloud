@@ -53,17 +53,3 @@ NAS(Network Attached Storage)와 유사한 클라우드 스토리지 서비스�
 ### **배포 및 관리**
 - **Docker**: 컨테이너화된 배포.
 - **AWS**: 클라우드 배포.
-
----
-
-## **프로젝트 구조**
-
-src/
-├── components/      # 공통 UI 컴포넌트 (버튼, 모달 등)
-├── layouts/         # 레이아웃 컴포넌트 (사이드바, 헤더)
-├── pages/           # 주요 페이지 (대시보드, 파일 업로드 등)
-├── hooks/           # 커스텀 React 훅
-├── services/        # API 호출 함수
-├── store/           # 상태 관리 파일 (Zustand 또는 Context API)
-├── utils/           # 유틸리티 함수
-└── styles/          # 스타일링 파일 (CSS, Tailwind)
