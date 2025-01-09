@@ -1,50 +1,69 @@
-# React + TypeScript + Vite
+# **NAS-Like Cloud Service**
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## **프로젝트 소개**
+NAS(Network Attached Storage)와 유사한 클라우드 스토리지 서비스입니다. 파일 업로드, 공유, 백업, 멀티 디바이스 동기화와 같은 기능을 제공합니다.
 
-Currently, two official plugins are available:
+## **주요 기능**
+1. **저장용량 관리**
+    - 사용 가능한 저장 용량 확인.
+    - 파일 및 폴더 정리.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+2. **파일 공유**
+    - QR 코드 생성.
+    - 다운로드 제한 및 만료 링크 설정.
 
-## Expanding the ESLint configuration
+3. **보안 설정**
+    - 파일 잠금.
+    - IP 기반 접근 제한.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+4. **자동 백업**
+    - 로컬 또는 클라우드로 주기적인 백업 스케줄링.
 
-- Configure the top-level `parserOptions` property like this:
+5. **멀티 디바이스 동기화**
+    - 여러 디바이스 간 실시간 파일 동기화.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+6. **미디어 스트리밍**
+    - 저장된 동영상 및 음악 스트리밍.
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+7. **RAID 및 저장소 관리**
+    - RAID를 통한 데이터 무결성 및 저장소 시각화.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+---
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+## **기술 스택**
+
+### **프론트엔드**
+- **React**: 컴포넌트 기반 UI 라이브러리.
+- **TypeScript**: 정적 타입 검사로 안정성 제공.
+- **Vite**: 빠른 개발 서버 및 빌드 환경.
+- **Chakra UI**: 접근성과 다크모드 지원 UI 라이브러리.
+- **React Query**: 서버 상태 관리.
+- **React Router**: 라우팅 구현.
+- **Axios**: HTTP 요청 처리.
+- **React Dropzone**: 드래그 앤 드롭 기반 파일 업로드.
+- **React Table**: 파일 목록 및 테이블 뷰 제공.
+- **React Chart.js 2**: 저장소 시각화.
+
+### **백엔드**
+- **Spring Boot**: REST API 서버 개발.
+- **MariaDB**: 관계형 데이터베이스로 파일 및 사용자 정보 관리.
+- **JWT (JSON Web Token)**: 인증 및 권한 관리.
+- **Samba/FTP 서버**: 파일 전송 프로토콜 지원.
+
+### **배포 및 관리**
+- **Docker**: 컨테이너화된 배포.
+- **AWS**: 클라우드 배포.
+
+---
+
+## **프로젝트 구조**
+
+src/
+├── components/      # 공통 UI 컴포넌트 (버튼, 모달 등)
+├── layouts/         # 레이아웃 컴포넌트 (사이드바, 헤더)
+├── pages/           # 주요 페이지 (대시보드, 파일 업로드 등)
+├── hooks/           # 커스텀 React 훅
+├── services/        # API 호출 함수
+├── store/           # 상태 관리 파일 (Zustand 또는 Context API)
+├── utils/           # 유틸리티 함수
+└── styles/          # 스타일링 파일 (CSS, Tailwind)
