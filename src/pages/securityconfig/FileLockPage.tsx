@@ -1,4 +1,4 @@
-import BasicLayout from "@/components/layouts/BasicLayout.tsx";
+import BasicLayout from "../../components/layouts/BasicLayout.tsx";
 
 function FileLockPage() {
     return (

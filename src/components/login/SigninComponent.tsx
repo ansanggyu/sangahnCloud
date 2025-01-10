@@ -1,7 +1,73 @@
-import {Box, Button, Heading, Input, Text, VStack} from '@chakra-ui/react';
-import { Checkbox } from "@/components/ui/checkbox";
+import { useState, useEffect, ChangeEvent } from "react";
+import { Box, Button, Input, Text, VStack } from "@chakra-ui/react";
+import { Checkbox } from "../ui/checkbox.tsx";
+import { useNavigate, useLocation } from "react-router-dom";
+import useSignin from "../../hooks/useSignin.ts"; // useSignin 훅을 가져옴
+
+const initialState = {
+    userId: "",
+    password: "",
+};
 
 function SigninComponent() {
+    const [param, setParam] = useState(initialState);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [rememberId, setRememberId] = useState(false);
+    const location = useLocation();
+    const navigate = useNavigate();
+    const { doSignin } = useSignin(); // doSignin 훅 호출
+
+    useEffect(() => {
+        const savedId = localStorage.getItem("rememberedId");
+        if (savedId) {
+            setParam((prev) => ({ ...prev, userId: savedId }));
+            setRememberId(true); // 로컬 스토리지에 저장된 ID가 있으면 체크박스를 선택 상태로 유지
+        }
+
+        const searchParams = new URLSearchParams(location.search);
+        const errorType = searchParams.get("error");
+
+        if (errorType === "all" && !errorMessage) {
+            setErrorMessage("로그인 세션이 만료되었습니다. 다시 로그인 해주세요.");
+        } else if (errorType === "incorrect" && !errorMessage) {
+            setErrorMessage("아이디나 패스워드가 틀립니다. 다시 로그인 해주세요.");
+        }
+    }, [location.search, errorMessage]);
+
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
+        setParam((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+        try {
+            console.log("로그인 요청 데이터:", param);
+
+            // doSignin 호출 및 Thunk 응답 확인
+            const response = await doSignin(param);
+
+            console.log("로그인 성공:", response);
+
+            // "아이디 저장"이 선택되었으면 로컬 스토리지에 userId 저장
+            if (rememberId) {
+                localStorage.setItem("rememberedId", param.userId);
+            } else {
+                localStorage.removeItem("rememberedId");
+            }
+
+            // 로그인 성공 후, 메인 페이지로 리디렉션
+            navigate("/main");
+        } catch (exception) {
+            console.error("로그인 실패:", exception);
+            setErrorMessage("로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.");
+        }
+    };
+
+    const toggleRememberId = () => {
+        setRememberId((prev) => !prev);
+    };
+
     return (
         <Box
             display="flex"
@@ -19,56 +85,67 @@ function SigninComponent() {
                 width={{ base: "full", sm: "lg" }}
                 maxWidth="400px"
             >
-                <Heading as="h1" size="4xl" textAlign="center" mb={6} color="blackAlpha.950">
-                    클라우드 인증 로그인
-                </Heading>
+                <VStack align="stretch">
+                    <Text fontSize="2xl" fontWeight="bold" textAlign="center" mb={4}>
+                        클라우드 인증 로그인
+                    </Text>
 
-                <form>
-                    <VStack align="stretch">
-                        {/* 아이디 입력 */}
-                        <Input
-                            type="text"
-                            name="creatorId"
-                            placeholder="아이디"
-                            borderColor="gray.300"
-                            _focus={{ borderColor: 'blue.500' }}
-                            required
-                            size="lg"
-                            p={4}
-                            fontSize="lg"
-                        />
+                    {errorMessage && (
+                        <Text color="red.500" textAlign="center">
+                            {errorMessage}
+                        </Text>
+                    )}
 
-                        {/* 패스워드 입력 */}
-                        <Input
-                            type="password"
-                            name="creatorPassword"
-                            placeholder="패스워드"
-                            borderColor="gray.300"
-                            _focus={{ borderColor: 'blue.500' }}
-                            required
-                            size="lg"
-                            p={4}
-                            fontSize="lg"
-                        />
+                    <form>
+                        <VStack align="stretch">
+                            <Input
+                                type="text"
+                                name="userId"
+                                placeholder="아이디"
+                                value={param.userId}
+                                onChange={handleChange}
+                                borderColor="gray.300"
+                                _focus={{ borderColor: "blue.500" }}
+                                required
+                                size="lg"
+                            />
 
-                        <Text fontWeight="bold" color="blackAlpha.950">아이디 저장</Text>
-                        <Checkbox colorScheme="blue" size="lg" defaultChecked/>
+                            <Input
+                                type="password"
+                                name="password"
+                                placeholder="패스워드"
+                                value={param.password}
+                                onChange={handleChange}
+                                borderColor="gray.300"
+                                _focus={{ borderColor: "blue.500" }}
+                                required
+                                size="lg"
+                            />
 
-                        {/* 로그인 버튼 */}
-                        <Button
-                            colorScheme="blue"
-                            width="full"
-                            size="lg"
-                            _hover={{ transform: "scale(1.05)" }}
-                            mt={4}
-                            py={6}
-                            fontSize="lg"
-                            boxShadow="md"
-                        >
-                            로그인
-                        </Button>
-                    </VStack>
-                </form>
+                            <Box display="flex" alignItems="center" justifyContent="space-between">
+                                <Checkbox
+                                    colorScheme="blue"
+                                    size="lg"
+                                    isChecked={rememberId}
+                                    onChange={toggleRememberId}
+                                />
+                                <Text fontWeight="bold" color="blackAlpha.950">
+                                    아이디 저장
+                                </Text>
+                            </Box>
+
+                            <Button
+                                colorScheme="blue"
+                                width="full"
+                                size="lg"
+                                onClick={handleClick}
+                                _hover={{ transform: "scale(1.05)" }}
+                            >
+                                로그인
+                            </Button>
+                        </VStack>
+                    </form>
+                </VStack>
             </Box>
         </Box>
     );

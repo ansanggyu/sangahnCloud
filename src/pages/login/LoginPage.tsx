@@ -1,4 +1,4 @@
-import SigninComponent from "@/components/login/SigninComponent.tsx";
+import SigninComponent from "../../components/login/SigninComponent.tsx";
 
 function LoginPage() {
     return (

@@ -5,7 +5,7 @@ import StorageRouter from "./StorageRouter";
 import TrashRouter from "./TrashRouter";
 import SecurityRouter from "./SecurityRouter";
 import ShareRouter from "./ShareRouter";
-import SettingsRouter from "@/routers/SettingRouter.tsx";
+import SettingsRouter from "./SettingRouter.tsx";
 
 const LoadingPage = lazy(() => import("../pages/common/LoadingPage.tsx"));
 const MainPage = lazy(() => import("../pages/main/MainPage.tsx"));

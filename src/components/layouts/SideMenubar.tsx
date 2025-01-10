@@ -1,6 +1,6 @@
 import {Box, Button, Text} from "@chakra-ui/react";
 import OneDepthMenu from "./OneDepthMenu";
-import DecorativeBox from "@/components/ui/DecorativeBox.tsx";
+import DecorativeBox from "../../components/ui/DecorativeBox.tsx";
 import {Link} from "react-router-dom";
 
 const menus = [
